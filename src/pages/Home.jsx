@@ -1,6 +1,10 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
 import HeaderImage from '../assets/header_image.jpg'
+import About from '../components/home/About'
+import Services from '../components/home/Services'
+import Contact from '../components/home/Contact'
+import Footer from '../components/Footer'
 
 const Home = () => {
 	return (
@@ -18,7 +22,13 @@ const Home = () => {
 					className="rounded-3xl my-20"
 					loading="lazy"
 				/>
+				<About />
+				<Services />
+				<Contact />
 			</main>
+			<footer className="container mx-auto">
+				<Footer />
+			</footer>
 		</div>
 	)
 }
