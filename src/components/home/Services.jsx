@@ -23,31 +23,37 @@ const Services = () => {
 
 	const categories = [
 		{
+			id: 1,
 			category: 'Logo Design Services',
 			source: LogoDesign,
 			color: '#FF763F',
 		},
 		{
+			id: 2,
 			category: 'Software Development',
 			source: SoftwareDev,
 			color: '#264201',
 		},
 		{
+			id: 3,
 			category: 'Vide Editing Services',
 			source: VideoEditing,
 			color: '#BE5172',
 		},
 		{
+			id: 4,
 			category: 'Website Development',
 			source: WebDev,
 			color: '#264201',
 		},
 		{
+			id: 5,
 			category: 'Social Media Marketing',
 			source: SocialMedia,
 			color: '#7A832D',
 		},
 		{
+			id: 6,
 			category: 'Architecture & Interior Design',
 			source: InteriorDesign,
 			color: '#633541',
@@ -62,24 +68,23 @@ const Services = () => {
 
 			{/* List of Services */}
 			<div className="grid grid-cols-6 gap-5 my-14">
-				{categories.map((category) => {
-					return (
-						<Link
-							to="/"
-							style={{ backgroundColor: category.color }}
-							className="p-2 flex flex-col gap-8 rounded-2xl h-full"
-						>
-							<h4 className="text-white text-lg font-medium p-4">
-								{category.category}
-							</h4>
-							<img
-								src={category.source}
-								alt={category.category}
-								className="rounded-xl w-full h-full object-cover mt-auto"
-							/>
-						</Link>
-					)
-				})}
+				{categories.map((category, index) => (
+					<Link
+						key={category.id}
+						to="/"
+						style={{ backgroundColor: category.color }}
+						className="p-2 flex flex-col gap-8 rounded-2xl h-full"
+					>
+						<h4 className="text-white text-lg font-medium p-4">
+							{category.category}
+						</h4>
+						<img
+							src={category.source}
+							alt={category.category}
+							className="rounded-xl w-full h-full object-cover mt-auto"
+						/>
+					</Link>
+				))}
 			</div>
 
 			{/* Poster */}

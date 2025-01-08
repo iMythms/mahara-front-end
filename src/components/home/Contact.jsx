@@ -1,22 +1,14 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { AlertTitle, AlertDescription } from '../ui/alert'
+import { Alert, AlertTitle, AlertDescription } from '../ui/alert'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '../ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 
 const contactFormSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
@@ -26,6 +18,10 @@ const contactFormSchema = z.object({
 })
 
 const Contact = () => {
+	// State for managing alerts
+	const [alertMessage, setAlertMessage] = useState(null)
+	const [alertType, setAlertType] = useState(null)
+
 	const form = useForm({
 		resolver: zodResolver(contactFormSchema),
 		defaultValues: {
@@ -37,6 +33,8 @@ const Contact = () => {
 	})
 
 	const onSubmit = async (data) => {
+		setAlertMessage(null) // Clear existing alerts
+
 		try {
 			const response = await fetch('http://localhost:4090/contactUs/new', {
 				method: 'POST',
@@ -46,13 +44,21 @@ const Contact = () => {
 				body: JSON.stringify(data),
 			})
 
-			if (!response.ok) throw new Error('Failed to send inquiry')
+			if (!response.ok) {
+				const errorData = await response.json()
+				throw new Error(errorData.error || 'Failed to send inquiry')
+			}
 
-			alert('Your inquiry has been sent successfully!')
+			// Show success alert
+			setAlertType('success')
+			setAlertMessage('Your inquiry has been sent successfully!')
 			form.reset()
 		} catch (error) {
-			console.error('Error submitting form:', error)
-			alert('Something went wrong. Please try again.')
+			// Show error alert
+			setAlertType('error')
+			setAlertMessage(
+				error.message || 'Something went wrong. Please try again.'
+			)
 		}
 	}
 
@@ -66,6 +72,26 @@ const Contact = () => {
 			</div>
 
 			<div className="my-14 w-1/2 ml-auto">
+				{/* Alerts */}
+				{alertMessage && (
+					<Alert
+						variant={alertType === 'success' ? 'success' : 'destructive'}
+						className={`mb-4 rounded-xl ${
+							alertType === 'success'
+								? 'border-green-500 bg-green-50 text-green-700'
+								: 'border-red-500 bg-red-50'
+						}`}
+					>
+						<AlertTitle>
+							{alertType === 'success' ? 'Success!' : 'Error'}
+						</AlertTitle>
+						<AlertDescription className="font-light">
+							{alertMessage}
+						</AlertDescription>
+					</Alert>
+				)}
+
+				{/* Form */}
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<FormField
