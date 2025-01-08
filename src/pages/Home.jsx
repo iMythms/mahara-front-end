@@ -1,0 +1,26 @@
+import React from 'react'
+import NavBar from '../components/NavBar'
+import HeaderImage from '../assets/header_image.jpg'
+
+const Home = () => {
+	return (
+		<div>
+			<header>
+				<NavBar />
+			</header>
+			<main className="container mx-auto">
+				<h1 className="flex items-center justify-center mt-48 text-5xl font-bold text-[#023A12]">
+					Find the perfect freelance talent for your project
+				</h1>
+				<img
+					src={HeaderImage}
+					alt="Header Image"
+					className="rounded-3xl my-20"
+					loading="lazy"
+				/>
+			</main>
+		</div>
+	)
+}
+
+export default Home
