@@ -15,6 +15,7 @@ const App = () => {
 	const getUserProfile = async () => {
 		try {
 			const data = await getProfile()
+
 			setUser(data)
 		} catch (error) {
 			console.error(
@@ -25,15 +26,15 @@ const App = () => {
 		}
 	}
 
+	useEffect(() => {
+		getUserProfile()
+	}, [])
+
 	const logOut = () => {
 		localStorage.removeItem('authToken')
 		setUser(null)
 		window.location.href = '/'
 	}
-
-	useEffect(() => {
-		getUserProfile()
-	}, [])
 
 	return (
 		<div className="flex flex-col min-h-screen">

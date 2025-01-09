@@ -69,7 +69,10 @@ const Signin = ({ getUserProfile }) => {
 			</h1>
 			{error && <p className="text-red-600 text-center">{error}</p>}
 			<Tabs defaultValue="client" className="w-[400px] mx-auto">
-				<TabsList className="grid w-full grid-cols-2">
+				<TabsList className="grid w-full grid-cols-3">
+					<TabsTrigger value="admin" onClick={() => handleRoleSwitch('admin')}>
+						Admin
+					</TabsTrigger>
 					<TabsTrigger
 						value="client"
 						onClick={() => handleRoleSwitch('client')}
@@ -83,6 +86,53 @@ const Signin = ({ getUserProfile }) => {
 						Freelancer
 					</TabsTrigger>
 				</TabsList>
+
+				{/* Admin */}
+				<TabsContent value="admin">
+					<Card>
+						<CardHeader>
+							<CardTitle>Sign in as an Admin</CardTitle>
+						</CardHeader>
+						<form onSubmit={handleSubmit}>
+							<CardContent className="space-y-4">
+								<div className="space-y-2">
+									<Label htmlFor="email">Email</Label>
+									<Input
+										id="email"
+										name="email"
+										type="email"
+										value={formData.email}
+										onChange={handleChange}
+										placeholder="Enter your email"
+										required
+									/>
+								</div>
+								<div className="space-y-2">
+									<Label htmlFor="password">Password</Label>
+									<Input
+										id="password"
+										name="password"
+										type="password"
+										value={formData.password}
+										onChange={handleChange}
+										placeholder="Enter your password"
+										required
+									/>
+								</div>
+							</CardContent>
+							<CardFooter>
+								<Button
+									type="submit"
+									className="w-full bg-[#57CB76] hover:bg-[#264201] "
+								>
+									Sign in as Admin
+								</Button>
+							</CardFooter>
+						</form>
+					</Card>
+				</TabsContent>
+
+				{/* Client */}
 				<TabsContent value="client">
 					<Card>
 						<CardHeader>
@@ -116,13 +166,18 @@ const Signin = ({ getUserProfile }) => {
 								</div>
 							</CardContent>
 							<CardFooter>
-								<Button type="submit" className="w-full">
+								<Button
+									type="submit"
+									className="w-full bg-[#57CB76] hover:bg-[#264201] "
+								>
 									Sign in as Client
 								</Button>
 							</CardFooter>
 						</form>
 					</Card>
 				</TabsContent>
+
+				{/* Freelancer */}
 				<TabsContent value="freelancer">
 					<Card>
 						<CardHeader>
@@ -156,7 +211,10 @@ const Signin = ({ getUserProfile }) => {
 								</div>
 							</CardContent>
 							<CardFooter>
-								<Button type="submit" className="w-full">
+								<Button
+									type="submit"
+									className="w-full bg-[#57CB76] hover:bg-[#264201] "
+								>
 									Sign in as Freelancer
 								</Button>
 							</CardFooter>

@@ -2,6 +2,16 @@ import React from 'react'
 import Logo from '../assets/mahara.svg'
 import { Link } from 'react-router-dom'
 
+import { Avatar, AvatarImage } from './ui/avatar'
+import {
+	Menubar,
+	MenubarContent,
+	MenubarItem,
+	MenubarMenu,
+	MenubarSeparator,
+	MenubarTrigger,
+} from './ui/menubar'
+
 const NavBar = ({ user, logOut }) => {
 	const handleScroll = (e, targetId) => {
 		e.preventDefault()
@@ -30,11 +40,19 @@ const NavBar = ({ user, logOut }) => {
 							>
 								Dashboard
 							</Link>
+
 							<Link
-								to="/profile"
+								to="/applications"
 								className="hover:bg-[#E6E6E6] px-4 py-1.5 rounded-xl"
 							>
-								Profile
+								Applications
+							</Link>
+
+							<Link
+								to="/jobs"
+								className="hover:bg-[#E6E6E6] px-4 py-1.5 rounded-xl"
+							>
+								Jobs
 							</Link>
 						</>
 					) : (
@@ -66,12 +84,34 @@ const NavBar = ({ user, logOut }) => {
 				<div className="flex justify-between items-center gap-5">
 					{/* Dynamic buttons */}
 					{user ? (
-						<button
-							onClick={logOut}
-							className="bg-white text-red-600 border border-red-600 px-4 py-1.5 rounded-xl hover:bg-red-600 hover:text-white"
-						>
-							Logout
-						</button>
+						<>
+							{/* Profile Menu */}
+							<Menubar asChild>
+								<MenubarMenu asChild>
+									<MenubarTrigger className="p-0 rounded-full cursor-pointer">
+										<Avatar>
+											<AvatarImage
+												src="https://github.com/shadcn.png"
+												alt="@shadcn"
+											/>
+										</Avatar>
+									</MenubarTrigger>
+									<MenubarContent>
+										<MenubarItem inset>
+											<Link to="/profile" className="w-full">
+												Profile
+											</Link>
+										</MenubarItem>
+										<MenubarSeparator />
+										<MenubarItem inset>
+											<button onClick={logOut} className="text-red-600">
+												Logout
+											</button>
+										</MenubarItem>
+									</MenubarContent>
+								</MenubarMenu>
+							</Menubar>
+						</>
 					) : (
 						<>
 							<Link

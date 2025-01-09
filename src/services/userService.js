@@ -3,7 +3,6 @@ import client from './config'
 export const getProfile = async () => {
 	try {
 		const response = await client.get('/user/profile')
-		console.log('Profile API Response:', response) // Log the full response
 		return response.data.user // Access the `user` property
 	} catch (error) {
 		console.error(

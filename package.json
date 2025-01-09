@@ -10,7 +10,9 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.10.0",
+		"@radix-ui/react-avatar": "^1.1.2",
 		"@radix-ui/react-label": "^2.1.1",
+		"@radix-ui/react-menubar": "^1.1.4",
 		"@radix-ui/react-slot": "^1.1.1",
 		"@radix-ui/react-tabs": "^1.1.2",
 		"@vitejs/plugin-react": "^4.3.4",
