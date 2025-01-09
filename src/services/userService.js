@@ -1,6 +1,15 @@
 import client from './config'
 
 export const getProfile = async () => {
-	const response = await client.get('/user/profile')
-	return response.data
+	try {
+		const response = await client.get('/user/profile')
+		console.log('Profile API Response:', response) // Log the full response
+		return response.data.user // Access the `user` property
+	} catch (error) {
+		console.error(
+			'Error fetching profile:',
+			error.response?.data || error.message
+		)
+		throw error // Propagate the error for higher-level handling
+	}
 }
