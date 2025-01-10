@@ -33,11 +33,14 @@ const Freelancer = () => {
 	// Fetch applications
 	const fetchApplications = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/applications/list', {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				'http://localhost:4090/applications/freelancer/list',
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 			setApplications(data || [])
 		} catch (error) {

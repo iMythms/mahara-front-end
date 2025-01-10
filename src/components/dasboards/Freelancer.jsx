@@ -19,7 +19,7 @@ const Freelancer = () => {
 	const fetchApplication = async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:4090/applications/list?status=pending`,
+				`http://localhost:4090/applications/freelancer/list?status=pending`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -119,6 +119,22 @@ const Freelancer = () => {
 			<div>
 				<h1 className="text-2xl font-bold text-[#404145] mb-6">Dashboard</h1>
 
+				{/* Quick Link to Profile for Uploading Projects */}
+				<Card className="mb-6">
+					<CardHeader>
+						<CardTitle>Profile</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<p>Add your latest projects and showcase your work!</p>
+						<Button
+							onClick={() => navigate('/profile')}
+							className="mt-4 flex justify-end items-center ml-auto"
+						>
+							Go to Profile
+						</Button>
+					</CardContent>
+				</Card>
+
 				{/* Application Notifications */}
 				<Card className="mb-6">
 					<CardHeader>
@@ -133,7 +149,7 @@ const Freelancer = () => {
 									) => (
 										<div
 											key={application._id}
-											className="flex items-center justify-between mb-4"
+											className="flex items-center justify-between mb-4 p-4 border w-full rounded-xl"
 										>
 											<div>
 												<h2 className="text-lg font-medium">
@@ -167,7 +183,7 @@ const Freelancer = () => {
 									)
 								)}
 								<Button
-									onClick={() => navigate('/freelancer/applications')}
+									onClick={() => navigate('/applications')}
 									variant="outline"
 									className="mt-4"
 								>
@@ -194,7 +210,7 @@ const Freelancer = () => {
 									) => (
 										<div
 											key={job._id}
-											className="flex items-center justify-between mb-4"
+											className="flex items-center justify-between mb-4 p-4 border w-full rounded-xl"
 										>
 											<div>
 												<h2 className="text-lg font-medium">{job.title}</h2>
@@ -231,7 +247,7 @@ const Freelancer = () => {
 									)
 								)}
 								<Button
-									onClick={() => navigate('/freelancer/jobs')}
+									onClick={() => navigate('/jobs')}
 									variant="outline"
 									className="mt-4"
 								>
@@ -241,22 +257,6 @@ const Freelancer = () => {
 						) : (
 							<p>No ongoing jobs</p>
 						)}
-					</CardContent>
-				</Card>
-
-				{/* Quick Link to Profile for Uploading Projects */}
-				<Card>
-					<CardHeader>
-						<CardTitle>Profile</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<p>Add your latest projects and showcase your work!</p>
-						<Button
-							onClick={() => navigate('/freelancer/profile')}
-							className="mt-4"
-						>
-							Go to Profile
-						</Button>
 					</CardContent>
 				</Card>
 			</div>
