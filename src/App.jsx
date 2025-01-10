@@ -7,6 +7,9 @@ import Signin from './pages/auth/Signin'
 import Signup from './pages/auth/Signup'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
+import Profile from './pages/Profile'
+import Applications from './pages/Applications'
+import Jobs from './pages/Jobs'
 import { getProfile } from './services/userService'
 
 const App = () => {
@@ -45,6 +48,9 @@ const App = () => {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/dashboard" element={<Dashboard user={user} />} />
+					<Route path="/profile" element={<Profile user={user} />} />
+					<Route path="/applications" element={<Applications user={user} />} />
+					<Route path="/jobs" element={<Jobs user={user} />} />
 					<Route
 						path="/auth/register"
 						element={<Signup getUserProfile={getUserProfile} />}
