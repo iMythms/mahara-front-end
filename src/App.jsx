@@ -10,6 +10,9 @@ import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Applications from './pages/Applications'
 import Jobs from './pages/Jobs'
+import FreelancerPortfolio from './pages/FreelancerPortfolio'
+import AddProject from './pages/AddProject'
+import Category from './pages/Category'
 import { getProfile } from './services/userService'
 
 const App = () => {
@@ -51,6 +54,15 @@ const App = () => {
 					<Route path="/profile" element={<Profile user={user} />} />
 					<Route path="/applications" element={<Applications user={user} />} />
 					<Route path="/jobs" element={<Jobs user={user} />} />
+					<Route
+						path="/categories/:category"
+						element={<Category user={user} />}
+					/>
+					<Route
+						path="/freelancer/:id"
+						element={<FreelancerPortfolio user={user} />}
+					/>
+					<Route path="/freelancer/add-project" element={<AddProject />} />
 					<Route
 						path="/auth/register"
 						element={<Signup getUserProfile={getUserProfile} />}

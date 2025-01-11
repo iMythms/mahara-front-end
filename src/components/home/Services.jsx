@@ -36,7 +36,7 @@ const Services = () => {
 		},
 		{
 			id: 3,
-			category: 'Vide Editing Services',
+			category: 'Video Editing Services',
 			source: VideoEditing,
 			color: '#BE5172',
 		},
@@ -71,7 +71,7 @@ const Services = () => {
 				{categories.map((category, index) => (
 					<Link
 						key={category.id}
-						to="/"
+						to={`/categories/${encodeURIComponent(category.category)}`} // Navigate to category page
 						style={{ backgroundColor: category.color }}
 						className="p-2 flex flex-col gap-8 rounded-2xl h-full"
 					>

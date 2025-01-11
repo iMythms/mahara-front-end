@@ -54,6 +54,16 @@ const NavBar = ({ user, logOut }) => {
 							>
 								Jobs
 							</Link>
+
+							{/* Render this link only for freelancers */}
+							{user.roleType === 'freelancer' && (
+								<Link
+									to={`/freelancer/${user._id}`} // Dynamically insert the freelancer's ID
+									className="hover:bg-[#E6E6E6] px-4 py-1.5 rounded-xl"
+								>
+									Portfolio
+								</Link>
+							)}
 						</>
 					) : (
 						<>
