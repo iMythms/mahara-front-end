@@ -70,6 +70,35 @@ const FreelancerPortfolio = ({ user }) => {
 		navigate(`/freelancer/add-project`)
 	}
 
+	const handleDeleteProject = async (projectId) => {
+		if (!confirm('Are you sure you want to delete this project?')) return
+
+		try {
+			const response = await fetch(
+				`http://localhost:4090/gallery/${projectId}`,
+				{
+					method: 'DELETE',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
+
+			if (!response.ok) {
+				throw new Error('Failed to delete the project.')
+			}
+
+			alert('Project deleted successfully!')
+			// Remove the deleted project from the portfolio list
+			setPortfolio((prevPortfolio) =>
+				prevPortfolio.filter((project) => project._id !== projectId)
+			)
+		} catch (error) {
+			console.error('Error deleting project:', error)
+			alert('Failed to delete project. Please try again.')
+		}
+	}
+
 	const handleAddToWishlist = async () => {
 		try {
 			const response = await fetch(`http://localhost:4090/wishlist/add`, {
@@ -183,8 +212,19 @@ const FreelancerPortfolio = ({ user }) => {
 						{/* Edit/Delete Buttons for Freelancer */}
 						{isOwner && (
 							<div className="flex justify-between mt-2 gap-2 ml-auto">
-								<Button>Edit</Button>
-								<Button variant="destructive">Delete</Button>
+								<Button
+									onClick={() =>
+										navigate(`/freelancer/edit-project/${project._id}`)
+									}
+								>
+									Edit
+								</Button>
+								<Button
+									variant="destructive"
+									onClick={() => handleDeleteProject(project._id)}
+								>
+									Delete
+								</Button>
 							</div>
 						)}
 					</div>

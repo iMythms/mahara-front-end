@@ -12,6 +12,7 @@ import Applications from './pages/Applications'
 import Jobs from './pages/Jobs'
 import FreelancerPortfolio from './pages/FreelancerPortfolio'
 import AddProject from './pages/AddProject'
+import UpdateProject from './pages/UpdateProject'
 import Category from './pages/Category'
 import { getProfile } from './services/userService'
 
@@ -63,6 +64,10 @@ const App = () => {
 						element={<FreelancerPortfolio user={user} />}
 					/>
 					<Route path="/freelancer/add-project" element={<AddProject />} />
+					<Route
+						path="/freelancer/edit-project/:projectId"
+						element={<UpdateProject />}
+					/>
 					<Route
 						path="/auth/register"
 						element={<Signup getUserProfile={getUserProfile} />}
