@@ -36,13 +36,16 @@ const Contact = () => {
 		setAlertMessage(null) // Clear existing alerts
 
 		try {
-			const response = await fetch('http://localhost:4090/contactUs/new', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/contactUs/new`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				}
+			)
 
 			if (!response.ok) {
 				const errorData = await response.json()

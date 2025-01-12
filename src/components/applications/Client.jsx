@@ -27,7 +27,7 @@ const Client = () => {
 	const fetchApplications = async () => {
 		try {
 			const response = await fetch(
-				'http://localhost:4090/applications/client/list',
+				`${import.meta.env.VITE_BACK_END_URL}/applications/client/list`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,

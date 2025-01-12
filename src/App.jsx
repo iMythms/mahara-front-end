@@ -14,6 +14,7 @@ import FreelancerPortfolio from './pages/FreelancerPortfolio'
 import AddProject from './pages/AddProject'
 import UpdateProject from './pages/UpdateProject'
 import Category from './pages/Category'
+import AddApplication from './pages/AddApplication'
 import { getProfile } from './services/userService'
 
 const App = () => {
@@ -68,6 +69,8 @@ const App = () => {
 						path="/freelancer/edit-project/:projectId"
 						element={<UpdateProject />}
 					/>
+
+					<Route path="/applications/new" element={<AddApplication />} />
 					<Route
 						path="/auth/register"
 						element={<Signup getUserProfile={getUserProfile} />}

@@ -24,7 +24,7 @@ const FreelancerPortfolio = ({ user }) => {
 	const fetchPortfolio = async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:4090/gallery/${freelancerId}`,
+				`${import.meta.env.VITE_BACK_END_URL}/gallery/${freelancerId}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -43,7 +43,7 @@ const FreelancerPortfolio = ({ user }) => {
 	const fetchFreelancer = async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:4090/user/freelancers/${freelancerId}`,
+				`${import.meta.env.VITE_BACK_END_URL}/user/freelancers/${freelancerId}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -74,7 +74,7 @@ const FreelancerPortfolio = ({ user }) => {
 
 		try {
 			const response = await fetch(
-				`http://localhost:4090/gallery/${projectId}`,
+				`${import.meta.env.VITE_BACK_END_URL}/gallery/${projectId}`,
 				{
 					method: 'DELETE',
 					headers: {
@@ -100,14 +100,17 @@ const FreelancerPortfolio = ({ user }) => {
 
 	const handleAddToWishlist = async () => {
 		try {
-			const response = await fetch(`http://localhost:4090/wishlist/add`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: JSON.stringify({ freelancerId }),
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/wishlist/add`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: JSON.stringify({ freelancerId }),
+				}
+			)
 			if (!response.ok) throw new Error('Failed to add freelancer to wishlist')
 			alert('Freelancer added to wishlist successfully!')
 		} catch (error) {
@@ -157,7 +160,7 @@ const FreelancerPortfolio = ({ user }) => {
 				) : (
 					<>
 						{/* Add to Wishlist for Clients */}
-						<Button onClick={handleAddToWishlist}>Add to Wishlist</Button>
+						{/* <Button onClick={handleAddToWishlist}>Add to Wishlist</Button> */}
 						{/* Request Service for Clients */}
 						<Button
 							onClick={() =>

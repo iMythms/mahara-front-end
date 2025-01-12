@@ -12,11 +12,14 @@ const Admin = () => {
 	// Fetch admin profile
 	const fetchAdminProfile = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/user/profile', {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/user/profile`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 			setAdmin(data.user || {})
 			setFormData({
@@ -30,16 +33,19 @@ const Admin = () => {
 	// Update admin profile
 	const updateAdminProfile = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/user/update', {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: JSON.stringify({
-					name: formData.name,
-				}),
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/user/update`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: JSON.stringify({
+						name: formData.name,
+					}),
+				}
+			)
 
 			if (!response.ok) {
 				throw new Error('Failed to update profile')

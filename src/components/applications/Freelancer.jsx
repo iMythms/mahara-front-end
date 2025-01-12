@@ -34,7 +34,7 @@ const Freelancer = () => {
 	const fetchApplications = async () => {
 		try {
 			const response = await fetch(
-				'http://localhost:4090/applications/freelancer/list',
+				`${import.meta.env.VITE_BACK_END_URL}/applications/freelancer/list`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -51,14 +51,17 @@ const Freelancer = () => {
 	// Update application status
 	const handleApplicationStatus = async (id, status) => {
 		try {
-			const response = await fetch(`http://localhost:4090/applications/${id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: JSON.stringify({ status }),
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/applications/${id}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: JSON.stringify({ status }),
+				}
+			)
 
 			if (!response.ok) {
 				throw new Error('Failed to update application')

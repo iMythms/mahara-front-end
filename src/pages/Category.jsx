@@ -17,9 +17,9 @@ const Category = ({ user }) => {
 	const fetchFreelancers = async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:4090/user/freelancers/category?category=${encodeURIComponent(
-					category
-				)}`, // Ensure category is encoded properly
+				`${
+					import.meta.env.VITE_BACK_END_URL
+				}/user/freelancers/category?category=${encodeURIComponent(category)}`, // Ensure category is encoded properly
 				{
 					headers: {
 						// Include token if required by the backend, otherwise omit
@@ -45,30 +45,38 @@ const Category = ({ user }) => {
 	}, [category])
 
 	return (
-		<section className="mt-16 mb-32">
+		<section className="mt-48 mb-32">
 			<div className="container mx-auto">
-				<h1 className="text-2xl font-bold mb-6">Freelancers in "{category}"</h1>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				<h1 className="text-2xl font-medium mb-10">
+					Freelancers in <span className="font-bold">{category}</span>
+				</h1>
+				<div className="flex flex-col gap-6">
 					{freelancers.length > 0 ? (
 						freelancers.map((freelancer) => (
-							<Card key={freelancer._id} className="border">
-								<CardHeader>
+							<Card
+								key={freelancer._id}
+								className="grid grid-cols-6 border shadow-sm hover:shadow-md transition-shadow duration-300"
+							>
+								<CardHeader className="col-span-1 flex items-start justify-start mr-auto">
 									<img
 										src={
 											freelancer.profilePicture ||
-											'https://via.placeholder.com/150' // Default image if no profile picture
+											'https://via.placeholder.com/150'
 										}
 										alt={`${freelancer.name}'s profile`}
-										className="w-full h-48 object-cover rounded-t-md"
+										className="w-full h-48 object-contain rounded-lg"
 									/>
 								</CardHeader>
-								<CardContent>
-									<h2 className="text-lg font-medium">{freelancer.name}</h2>
-									<p className="text-sm text-gray-500">
+								<CardContent className="col-span-4 flex flex-col justify-center p-4">
+									<h2 className="text-2xl font-bold truncate">
+										{freelancer.name}
+									</h2>
+
+									<p className="text-sm text-gray-500 mt-2">
 										Rating: {freelancer.averageRating || 0} / 5
 									</p>
 								</CardContent>
-								<CardFooter className="flex justify-between">
+								<CardFooter className="col-span-1 flex justify-end items-end p-4">
 									<Button
 										variant="outline"
 										size="sm"
@@ -80,7 +88,9 @@ const Category = ({ user }) => {
 							</Card>
 						))
 					) : (
-						<p>No freelancers found for this category.</p>
+						<p className="col-span-full text-center text-gray-500">
+							No freelancers found for this category.
+						</p>
 					)}
 				</div>
 			</div>

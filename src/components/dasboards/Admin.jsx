@@ -12,7 +12,7 @@ const Admin = () => {
 	const fetchApplications = async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:4090/applications/admin/list`,
+				`${import.meta.env.VITE_BACK_END_URL}/applications/admin/list`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -29,11 +29,14 @@ const Admin = () => {
 	// Fetch all jobs
 	const fetchJobs = async () => {
 		try {
-			const response = await fetch(`http://localhost:4090/jobs/list/admin`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/jobs/list/admin`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 			setJobs(data || [])
 		} catch (error) {

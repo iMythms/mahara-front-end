@@ -19,7 +19,9 @@ const Freelancer = () => {
 	const fetchApplication = async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:4090/applications/freelancer/list?status=pending`,
+				`${
+					import.meta.env.VITE_BACK_END_URL
+				}/applications/freelancer/list?status=pending`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -36,11 +38,14 @@ const Freelancer = () => {
 	// Fetch ongoing jobs
 	const fetchJobs = async () => {
 		try {
-			const response = await fetch(`http://localhost:4090/jobs/list`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/jobs/list`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 
 			// Filter jobs with status 'todo' or 'in_progress'
@@ -57,14 +62,17 @@ const Freelancer = () => {
 	// Approve or Reject applications
 	const handleApplicationStatus = async (id, status) => {
 		try {
-			const response = await fetch(`http://localhost:4090/applications/${id}`, {
-				method: 'PUT', // Correct HTTP method
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: JSON.stringify({ status }), // Pass the status in the request body
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/applications/${id}`,
+				{
+					method: 'PUT', // Correct HTTP method
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: JSON.stringify({ status }), // Pass the status in the request body
+				}
+			)
 
 			if (!response.ok) {
 				const errorData = await response.json()
@@ -86,14 +94,17 @@ const Freelancer = () => {
 	// Update job status
 	const handleJobStatusUpdate = async (jobId, status) => {
 		try {
-			const response = await fetch(`http://localhost:4090/jobs/${jobId}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: JSON.stringify({ status }),
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/jobs/${jobId}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: JSON.stringify({ status }),
+				}
+			)
 
 			if (!response.ok) {
 				throw new Error(`Failed to update job status: ${response.statusText}`)

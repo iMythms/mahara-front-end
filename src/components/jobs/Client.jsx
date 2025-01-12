@@ -26,11 +26,14 @@ const Client = () => {
 	// Fetch jobs
 	const fetchJobs = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/jobs/list', {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/jobs/list`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 			setJobs(data || [])
 		} catch (error) {

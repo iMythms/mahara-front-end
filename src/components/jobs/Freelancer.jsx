@@ -33,11 +33,14 @@ const Freelancer = () => {
 	// Fetch jobs
 	const fetchJobs = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/jobs/list', {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/jobs/list`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 			setJobs(data || [])
 		} catch (error) {
@@ -48,14 +51,17 @@ const Freelancer = () => {
 	// Update job status
 	const handleJobStatus = async (id, status) => {
 		try {
-			const response = await fetch(`http://localhost:4090/jobs/${id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: JSON.stringify({ status }),
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/jobs/${id}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: JSON.stringify({ status }),
+				}
+			)
 
 			if (!response.ok) {
 				throw new Error('Failed to update job status')

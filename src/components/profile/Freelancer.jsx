@@ -24,11 +24,14 @@ const Freelancer = () => {
 	// Fetch freelancer profile
 	const fetchFreelancerProfile = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/user/profile', {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/user/profile`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 
 			setFreelancer(data.user || {})
@@ -58,13 +61,16 @@ const Freelancer = () => {
 				formDataToSend.append('profilePicture', formData.profilePicture)
 			}
 
-			const response = await fetch('http://localhost:4090/user/update', {
-				method: 'PUT',
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: formDataToSend,
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/user/update`,
+				{
+					method: 'PUT',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: formDataToSend,
+				}
+			)
 
 			if (!response.ok) {
 				throw new Error('Failed to update profile')
@@ -123,13 +129,16 @@ const Freelancer = () => {
 				formData.append('profilePicture', file)
 
 				// Send the update request to the server
-				const response = await fetch('http://localhost:4090/user/update', {
-					method: 'PUT',
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-					},
-					body: formData,
-				})
+				const response = await fetch(
+					`${import.meta.env.VITE_BACK_END_URL}/user/update`,
+					{
+						method: 'PUT',
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+						},
+						body: formData,
+					}
+				)
 
 				if (!response.ok) {
 					throw new Error('Failed to update profile picture')

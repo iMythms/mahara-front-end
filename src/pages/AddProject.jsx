@@ -38,13 +38,16 @@ const AddProject = () => {
 		})
 
 		try {
-			const response = await fetch('http://localhost:4090/gallery/new', {
-				method: 'POST',
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: formData,
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/gallery/new`,
+				{
+					method: 'POST',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: formData,
+				}
+			)
 
 			const data = await response.json()
 			console.log('Backend response:', data)

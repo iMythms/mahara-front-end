@@ -13,11 +13,14 @@ const Client = () => {
 	// Fetch client profile
 	const fetchClientProfile = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/user/profile', {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/user/profile`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+				}
+			)
 			const data = await response.json()
 			setClient(data.user || {})
 			setFormData({
@@ -31,16 +34,19 @@ const Client = () => {
 	// Update client profile
 	const updateClientProfile = async () => {
 		try {
-			const response = await fetch('http://localhost:4090/user/update', {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-				},
-				body: JSON.stringify({
-					name: formData.name,
-				}),
-			})
+			const response = await fetch(
+				`${import.meta.env.VITE_BACK_END_URL}/user/update`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: JSON.stringify({
+						name: formData.name,
+					}),
+				}
+			)
 
 			if (!response.ok) {
 				throw new Error('Failed to update profile')
@@ -81,13 +87,16 @@ const Client = () => {
 				formData.append('profilePicture', file)
 
 				// Send the update request to the server
-				const response = await fetch('http://localhost:4090/user/update', {
-					method: 'PUT',
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-					},
-					body: formData,
-				})
+				const response = await fetch(
+					`${import.meta.env.VITE_BACK_END_URL}/user/update`,
+					{
+						method: 'PUT',
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+						},
+						body: formData,
+					}
+				)
 
 				if (!response.ok) {
 					throw new Error('Failed to update profile picture')

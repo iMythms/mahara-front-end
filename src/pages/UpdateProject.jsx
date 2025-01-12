@@ -20,7 +20,7 @@ const UpdateProject = ({ user }) => {
 		const fetchProjectDetails = async () => {
 			try {
 				const response = await fetch(
-					`http://localhost:4090/gallery/project/${projectId}`,
+					`${import.meta.env.VITE_BACK_END_URL}/gallery/project/${projectId}`,
 					{
 						headers: {
 							Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -80,7 +80,7 @@ const UpdateProject = ({ user }) => {
 
 		try {
 			const response = await fetch(
-				`http://localhost:4090/gallery/update/${projectId}`,
+				`${import.meta.env.VITE_BACK_END_URL}/gallery/update/${projectId}`,
 				{
 					method: 'PUT',
 					headers: {
