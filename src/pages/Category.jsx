@@ -9,22 +9,31 @@ import {
 import { Button } from '../components/ui/button'
 
 const Category = ({ user }) => {
-	const { category } = useParams()
-	const [freelancers, setFreelancers] = useState([])
+	const { category } = useParams() // Get category from URL params
+	const [freelancers, setFreelancers] = useState([]) // State for freelancers
 	const navigate = useNavigate()
 
 	// Fetch freelancers for the category
 	const fetchFreelancers = async () => {
 		try {
 			const response = await fetch(
-				`http://localhost:4090/user/freelancers/category?category=${category}`,
+				`http://localhost:4090/user/freelancers/category?category=${encodeURIComponent(
+					category
+				)}`, // Ensure category is encoded properly
 				{
 					headers: {
+						// Include token if required by the backend, otherwise omit
 						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 					},
 				}
 			)
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch freelancers')
+			}
+
 			const data = await response.json()
+			console.log('Freelancers fetched:', data) // Debugging log
 			setFreelancers(data || [])
 		} catch (error) {
 			console.error('Error fetching freelancers:', error)
@@ -47,7 +56,7 @@ const Category = ({ user }) => {
 									<img
 										src={
 											freelancer.profilePicture ||
-											'https://via.placeholder.com/150'
+											'https://via.placeholder.com/150' // Default image if no profile picture
 										}
 										alt={`${freelancer.name}'s profile`}
 										className="w-full h-48 object-cover rounded-t-md"

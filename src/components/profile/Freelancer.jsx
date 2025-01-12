@@ -8,6 +8,8 @@ const Freelancer = () => {
 	const [formData, setFormData] = useState({
 		name: '',
 		categories: [],
+		profilePicture: null, // For file to be submitted
+		previewProfilePicture: '', // For immediate preview
 	})
 	const categoriesList = [
 		'No Category',
@@ -28,10 +30,15 @@ const Freelancer = () => {
 				},
 			})
 			const data = await response.json()
+
 			setFreelancer(data.user || {})
 			setFormData({
 				name: data.user?.name || '',
-				categories: data.user?.categories || [],
+				categories: Array.isArray(data.user?.categories) // Check if already an array
+					? data.user.categories
+					: typeof data.user?.categories === 'string'
+					? data.user.categories.split(',') // Split string into array
+					: [], // Default to empty array
 			})
 		} catch (err) {
 			console.error('Error fetching profile:', err)
@@ -41,18 +48,22 @@ const Freelancer = () => {
 	// Update freelancer profile
 	const updateFreelancerProfile = async () => {
 		try {
+			const formDataToSend = new FormData()
+			formDataToSend.append('name', formData.name)
+
+			// Send categories as a JSON string
+			formDataToSend.append('categories', JSON.stringify(formData.categories))
+
+			if (formData.profilePicture) {
+				formDataToSend.append('profilePicture', formData.profilePicture)
+			}
+
 			const response = await fetch('http://localhost:4090/user/update', {
 				method: 'PUT',
 				headers: {
-					'Content-Type': 'application/json',
 					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 				},
-				body: JSON.stringify({
-					name: formData.name,
-					categories: formData.categories.length
-						? formData.categories
-						: ['none'],
-				}),
+				body: formDataToSend,
 			})
 
 			if (!response.ok) {
@@ -61,6 +72,11 @@ const Freelancer = () => {
 
 			const updatedData = await response.json()
 			setFreelancer(updatedData.user || {})
+			setFormData((prev) => ({
+				...prev,
+				profilePicture: null,
+				previewProfilePicture: '',
+			}))
 			alert('Profile updated successfully!')
 		} catch (err) {
 			console.error('Error updating profile:', err)
@@ -90,12 +106,57 @@ const Freelancer = () => {
 		})
 	}
 
+	// Handle file input
+	const handleFileChange = async (e) => {
+		const file = e.target.files[0]
+		if (file) {
+			// Show a preview of the image immediately
+			const previewUrl = URL.createObjectURL(file)
+			setFreelancer((prev) => ({
+				...prev,
+				profilePicture: previewUrl, // Temporarily show the selected image
+			}))
+
+			try {
+				// Create form data with the selected image
+				const formData = new FormData()
+				formData.append('profilePicture', file)
+
+				// Send the update request to the server
+				const response = await fetch('http://localhost:4090/user/update', {
+					method: 'PUT',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: formData,
+				})
+
+				if (!response.ok) {
+					throw new Error('Failed to update profile picture')
+				}
+
+				const updatedData = await response.json()
+
+				// Update the freelancer profile with the updated picture from the server
+				setFreelancer((prev) => ({
+					...prev,
+					profilePicture:
+						updatedData.user?.profilePicture || prev.profilePicture,
+				}))
+			} catch (err) {
+				console.error('Error uploading profile picture:', err)
+			} finally {
+				// Revoke the temporary preview URL
+				URL.revokeObjectURL(previewUrl)
+			}
+		}
+	}
+
 	// Handle form submission
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		updateFreelancerProfile()
 	}
-
 	useEffect(() => {
 		fetchFreelancerProfile()
 	}, [])
@@ -104,9 +165,19 @@ const Freelancer = () => {
 		<section className="mt-16 mb-32">
 			<main className="container mx-auto">
 				<div className="flex items-center mb-8">
-					{/* Avatar */}
-					<Avatar className="h-24 w-24">
-						{freelancer?.profilePicture ? (
+					<Avatar className="h-24 w-24 relative cursor-pointer">
+						<input
+							type="file"
+							accept="image/*"
+							className="absolute inset-0 opacity-0 cursor-pointer"
+							onChange={(e) => handleFileChange(e)}
+						/>
+						{formData.previewProfilePicture ? (
+							<AvatarImage
+								src={formData.previewProfilePicture}
+								alt={freelancer?.name || 'Freelancer'}
+							/>
+						) : freelancer?.profilePicture ? (
 							<AvatarImage
 								src={freelancer?.profilePicture}
 								alt={freelancer?.name || 'Freelancer'}

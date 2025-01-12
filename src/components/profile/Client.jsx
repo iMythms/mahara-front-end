@@ -8,6 +8,7 @@ const Client = () => {
 	const [formData, setFormData] = useState({
 		name: '',
 	})
+	const [isUploading, setIsUploading] = useState(false) // For upload state
 
 	// Fetch client profile
 	const fetchClientProfile = async () => {
@@ -47,10 +48,8 @@ const Client = () => {
 
 			const updatedData = await response.json()
 			setClient(updatedData.user || {})
-			alert('Profile updated successfully!')
 		} catch (err) {
 			console.error('Error updating profile:', err)
-			alert('Failed to update profile. Please try again.')
 		}
 	}
 
@@ -61,6 +60,54 @@ const Client = () => {
 			...prev,
 			[name]: value,
 		}))
+	}
+
+	// Handle file input
+	const handleFileChange = async (e) => {
+		const file = e.target.files[0]
+		if (file) {
+			// Show a preview of the image immediately
+			const previewUrl = URL.createObjectURL(file)
+			setClient((prev) => ({
+				...prev,
+				profilePicture: previewUrl, // Temporarily show the selected image
+			}))
+
+			setIsUploading(true) // Set uploading state
+
+			try {
+				// Create form data with the selected image
+				const formData = new FormData()
+				formData.append('profilePicture', file)
+
+				// Send the update request to the server
+				const response = await fetch('http://localhost:4090/user/update', {
+					method: 'PUT',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					},
+					body: formData,
+				})
+
+				if (!response.ok) {
+					throw new Error('Failed to update profile picture')
+				}
+
+				const updatedData = await response.json()
+				// Update the client profile with the updated picture from the server
+				setClient((prev) => ({
+					...prev,
+					profilePicture:
+						updatedData.user?.profilePicture || prev.profilePicture,
+				}))
+			} catch (err) {
+				console.error('Error uploading profile picture:', err)
+			} finally {
+				setIsUploading(false) // Reset uploading state
+				// Revoke the temporary preview URL
+				URL.revokeObjectURL(previewUrl)
+			}
+		}
 	}
 
 	// Handle form submission
@@ -78,7 +125,13 @@ const Client = () => {
 			<main className="container mx-auto">
 				<div className="flex items-center mb-8">
 					{/* Avatar */}
-					<Avatar className="h-24 w-24">
+					<Avatar className="h-24 w-24 relative cursor-pointer">
+						<input
+							type="file"
+							accept="image/*"
+							className="absolute inset-0 opacity-0 cursor-pointer"
+							onChange={(e) => handleFileChange(e)}
+						/>
 						{client?.profilePicture ? (
 							<AvatarImage
 								src={client?.profilePicture}
@@ -131,8 +184,8 @@ const Client = () => {
 							</div>
 						</div>
 
-						<Button type="submit" className="mt-4">
-							Save Changes
+						<Button type="submit" className="mt-4" disabled={isUploading}>
+							{isUploading ? 'Saving...' : 'Save Changes'}
 						</Button>
 					</form>
 				</div>

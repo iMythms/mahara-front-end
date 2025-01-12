@@ -2,7 +2,7 @@ import React from 'react'
 import Logo from '../assets/mahara.svg'
 import { Link } from 'react-router-dom'
 
-import { Avatar, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import {
 	Menubar,
 	MenubarContent,
@@ -100,10 +100,16 @@ const NavBar = ({ user, logOut }) => {
 								<MenubarMenu asChild>
 									<MenubarTrigger className="p-0 rounded-full cursor-pointer">
 										<Avatar>
-											<AvatarImage
-												src="https://github.com/shadcn.png"
-												alt="@shadcn"
-											/>
+											{user.profilePicture ? (
+												<AvatarImage
+													src={user.profilePicture} // Display user's profile picture
+													alt={user.name || 'User'}
+												/>
+											) : (
+												<AvatarFallback className="text-xl font-bold">
+													{user.name?.charAt(0).toUpperCase() || 'U'}
+												</AvatarFallback>
+											)}
 										</Avatar>
 									</MenubarTrigger>
 									<MenubarContent>
