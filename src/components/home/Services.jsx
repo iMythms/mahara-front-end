@@ -7,7 +7,7 @@ import VideoEditing from '../../assets/videoEditing.png'
 import WebDev from '../../assets/WebDev.png'
 import SocialMedia from '../../assets/SocialMedia.png'
 import InteriorDesign from '../../assets/InteriorDesign.png'
-import Poster from '../../assets/Poster.png'
+import Poster from '../../assets/poster.png'
 
 const Services = () => {
 	const handleScroll = (e, targetId) => {
